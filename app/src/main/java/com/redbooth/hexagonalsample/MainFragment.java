@@ -13,9 +13,16 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements MainView {
     private ListView listView;
     private CursorAdapter listAdapter;
+    private MainPresenter presenter;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        presenter = PresenterFactory.getMainPresenter(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,7 +36,7 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         configureList();
-        setLoader();
+        presenter.notifyOnCreate(getActivity());
     }
 
     private void configureList() {
@@ -43,22 +50,8 @@ public class MainFragment extends Fragment {
         listView.setAdapter(listAdapter);
     }
 
-    private void setLoader() {
-        getLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
-            @Override
-            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                return new CursorLoader(getActivity(), MainContentProvider.URI, null, null, null, null);
-            }
-
-            @Override
-            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                listAdapter.swapCursor(data);
-            }
-
-            @Override
-            public void onLoaderReset(Loader<Cursor> loader) {
-                listAdapter.swapCursor(null);
-            }
-        });
+    @Override
+    public void swaplListData(Cursor cursor) {
+        listAdapter.swapCursor(cursor);
     }
 }
