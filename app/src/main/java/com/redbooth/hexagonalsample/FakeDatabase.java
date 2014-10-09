@@ -2,10 +2,13 @@ package com.redbooth.hexagonalsample;
 
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.provider.BaseColumns;
 
 public class FakeDatabase {
+    public static final String COLUMN_NAME = "name";
+
     public static Cursor getNames() {
-        MatrixCursor matrixCursor = new MatrixCursor(new String[]{"_id", "name"}, 10);
+        MatrixCursor matrixCursor = new MatrixCursor(new String[]{BaseColumns._ID, COLUMN_NAME}, 10);
         matrixCursor.addRow(new String[] {"0", "Cupcake"});
         matrixCursor.addRow(new String[] {"1", "Donut"});
         matrixCursor.addRow(new String[] {"2", "Eclair"});

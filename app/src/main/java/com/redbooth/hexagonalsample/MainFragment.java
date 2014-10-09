@@ -15,7 +15,7 @@ import android.widget.SimpleCursorAdapter;
 
 public class MainFragment extends Fragment {
     private ListView listView;
-    private CursorAdapter cursorAdapter;
+    private CursorAdapter listAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,14 +33,14 @@ public class MainFragment extends Fragment {
     }
 
     private void configureList() {
-        cursorAdapter =
+        listAdapter =
                 new SimpleCursorAdapter(getActivity(),
                                         android.R.layout.simple_list_item_1,
                                         null,
-                                        new String[]{"name"},
+                                        new String[]{FakeDatabase.COLUMN_NAME},
                                         new int[]{android.R.id.text1},
                                         0);
-        listView.setAdapter(cursorAdapter);
+        listView.setAdapter(listAdapter);
     }
 
     private void setLoader() {
@@ -52,12 +52,12 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                cursorAdapter.swapCursor(data);
+                listAdapter.swapCursor(data);
             }
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
-                cursorAdapter.swapCursor(null);
+                listAdapter.swapCursor(null);
             }
         });
     }
