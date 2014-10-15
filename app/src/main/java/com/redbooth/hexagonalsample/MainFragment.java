@@ -1,24 +1,24 @@
 package com.redbooth.hexagonalsample;
 
 import android.app.Fragment;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
-public class MainFragment extends Fragment implements MainView {
+import java.util.List;
+
+public class MainFragment extends Fragment {
     private ListView listView;
-    private CursorAdapter listAdapter;
-    private MainPresenter presenter;
+    private ArrayAdapter<String> listAdapter;
+    private MainFragmentBoundary viewBoundary;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = PresenterFactory.getMainPresenter(this);
+        viewBoundary = MainFragmentBoundary.newInstance(this);
     }
 
     @Override
@@ -32,23 +32,14 @@ public class MainFragment extends Fragment implements MainView {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        configureList();
-        presenter.notifyOnCreate(getActivity());
+        viewBoundary.notifyOnCreate();
     }
 
-    private void configureList() {
-        listAdapter =
-                new SimpleCursorAdapter(getActivity(),
-                                        android.R.layout.simple_list_item_1,
-                                        null,
-                                        new String[]{FakeDatabase.COLUMN_NAME},
-                                        new int[]{android.R.id.text1},
-                                        0);
+    public void setListAdapter(List<String> names) {
+        listAdapter = new ArrayAdapter<String>(getActivity(),
+                                               android.R.layout.simple_list_item_1,
+                                               android.R.id.text1,
+                                               names);
         listView.setAdapter(listAdapter);
-    }
-
-    @Override
-    public void swaplListData(Cursor cursor) {
-        listAdapter.swapCursor(cursor);
     }
 }
