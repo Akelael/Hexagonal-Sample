@@ -18,7 +18,7 @@ public class FakeDatabase {
         matrixCursor.addRow(new String[] {"6", "Ice Cream Sandwich"});
         matrixCursor.addRow(new String[] {"7", "Jelly Bean"});
         matrixCursor.addRow(new String[] {"8", "KitKat"});
-        matrixCursor.addRow(new String[] {"9", "Lollipop?"});
+        matrixCursor.addRow(new String[] {"9", "Lollipop!"});
         return matrixCursor;
     }
 }
